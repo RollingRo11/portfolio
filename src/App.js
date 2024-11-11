@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import Landing from './pages/Landing';
 import About from './pages/About';
 import Work from './pages/Work';
 import Skills from './pages/Skills';
 import './App.css';
 
-// Separate component for header logic
 function HeaderController() {
   const [showHeader, setShowHeader] = useState(false);
   const location = useLocation();
@@ -46,6 +46,7 @@ function App() {
           <Route path="/work" element={<Work />} />
           <Route path="/skills" element={<Skills />} />
         </Routes>
+        <Footer />
       </div>
     </Router>
   );
