@@ -23,7 +23,7 @@ function About() {
             content="Major: Computer Science" 
           />
           <TerminalLine 
-            content="Expected Graduation: 2027" 
+            content="Expected Graduation: 2028" 
           />
         </div>
 
