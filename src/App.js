@@ -1,50 +1,53 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
-import LandingPage from './components/LandingPage';
-import Home from './components/Home';
-import About from './components/About';
-import Skills from './components/Skills';
-import Projects from './components/Projects';
-import Footer from './components/Footer';
+import Landing from './pages/Landing';
+import About from './pages/About';
+import Work from './pages/Work';
+import Skills from './pages/Skills';
 import './App.css';
 
-function App() {
+// Separate component for header logic
+function HeaderController() {
   const [showHeader, setShowHeader] = useState(false);
+  const location = useLocation();
+  const isLandingPage = location.pathname === '/portfolio' || location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      
-      if (scrollPosition > 0) {
-        setShowHeader(true);
+      if (isLandingPage) {
+        if (window.scrollY > 100) {
+          setShowHeader(true);
+        } else {
+          setShowHeader(false);
+        }
       } else {
-        setShowHeader(false);
+        setShowHeader(true);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial scroll position
+    
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isLandingPage]);
 
+  return <Header className={showHeader ? 'visible' : 'hidden'} />;
+}
+
+function App() {
   return (
-    <div className="App">
-      <Header className={`header ${showHeader ? 'visible' : 'hidden'}`} />
-      <main className="main-container">
-        <section id="landing">
-          <LandingPage />
-        </section>
-        <section id="about">
-          <About />
-        </section>
-        <section id="skills">
-          <Skills />
-        </section>
-        <section id="projects">
-          <Projects />
-        </section>
-        <Footer />
-      </main>
-    </div>
+    <Router basename="/portfolio">
+      <div className="App">
+        <HeaderController />
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/work" element={<Work />} />
+          <Route path="/skills" element={<Skills />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
