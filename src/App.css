@@ -1,38 +1,801 @@
-.App {
+/* Global Styles */
+:root {
+  --terminal-bg: #0a0a0a;
+  --terminal-text: #00ff9c;
+  --terminal-secondary: #00cc7e;
+  --terminal-highlight: rgba(0, 255, 156, 0.1);
+  --terminal-window-bg: rgba(0, 0, 0, 0.8);
+  --terminal-shadow: 0 0 20px rgba(0, 255, 156, 0.2);
+  --font-main: 'JetBrains Mono', 'Source Code Pro', monospace;
+  --gradient-dark: #0a0a0a;
+  --gradient-mid: #111111;
+  --gradient-light: #161616;
+}
+
+body {
+  background-color: var(--terminal-bg);
+  color: var(--terminal-text);
+  font-family: var(--font-main);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    var(--gradient-dark) 0%,
+    var(--gradient-mid) 50%,
+    var(--gradient-light) 100%
+  );
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Terminal window styling */
+.terminal-window {
+  background-color: rgba(10, 10, 10, 0.95);
+  border: 1px solid var(--terminal-text);
+  border-radius: 8px;
+  padding: 25px;
+  margin: 20px auto;
+  box-shadow: var(--terminal-shadow);
+  backdrop-filter: blur(5px);
+  max-width: 800px;
+  transform: none;
+  opacity: 1;
+}
+
+.terminal-output {
+  margin: 10px 0 20px 20px;
+}
+
+.terminal-output p {
+  margin: 5px 0;
+  line-height: 1.8;
+}
+
+/* Footer styles */
+footer {
+  background-color: rgba(10, 10, 10, 0.95);
+  border-top: 1px solid var(--terminal-text);
+  padding: 20px 0;
   text-align: center;
+  backdrop-filter: blur(5px);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.footer-content {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.social-links {
+  display: flex;
+  gap: 20px;
+}
+
+.social-links a {
+  color: var(--terminal-text);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  color: var(--terminal-secondary);
+  text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .terminal-window {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  .terminal-name {
+    font-size: 1.5rem;
+  }
+
+  nav {
+    gap: 15px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    gap: 15px;
   }
 }
 
-.App-header {
-  background-color: #282c34;
+/* Project styles */
+.project-details {
+  padding-left: 20px;
+  margin: 10px 0 20px 0;
+  border-left: 1px solid var(--terminal-secondary);
+}
+
+/* Terminal line hover effect */
+.terminal-line:hover {
+  background-color: transparent;
+}
+
+.terminal-output .terminal-line:hover {
+  background-color: var(--terminal-highlight);
+  border-radius: 4px;
+}
+
+.terminal-line.prompt:hover {
+  background-color: transparent;
+}
+
+/* Project link styles */
+.project-details a {
+  color: var(--terminal-text);
+  text-decoration: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.project-details a:hover {
+  background-color: var(--terminal-highlight);
+}
+
+/* Hidden state for animations */
+.hidden {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+/* Fade in animation */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Update/add these styles */
+.terminal-line {
+  min-height: 1.2em;
+  position: relative;
+  margin: 5px 0;
+  opacity: 1;
+}
+
+.cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1em;
+  background-color: var(--terminal-text);
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+  vertical-align: middle;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Remove or comment out these previous animations */
+/* .terminal-line.typed {
+  border-right: 2px solid var(--terminal-text);
+  animation: 
+    typewriter 2s steps(44) 1s forwards,
+    blinkTextCursor 500ms steps(44) infinite;
+} */
+
+/* Update the terminal window animation */
+.terminal-window {
+  opacity: 1;
+  transform: none;
+}
+
+.terminal-output {
+  margin: 10px 0 20px 20px;
+}
+
+/* Header styles */
+header {
+  background-color: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 15px 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.header-container {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+.terminal-name {
+  color: var(--terminal-text);
+  font-size: 1.8rem;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  margin: 0;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--terminal-text);
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  line-height: 1;
+}
+
+.nav-links a:hover {
+  background-color: var(--terminal-highlight);
+}
+
+.nav-links a::before {
+  content: ">";
+  margin-right: 5px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.nav-links a:hover::before {
+  opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .terminal-name {
+    font-size: 1.5rem;
+  }
+
+  .nav-links {
+    gap: 15px;
+  }
+}
+
+/* Main content spacing */
+main {
+  padding-top: 80px;
+}
+
+/* Section styles */
+section {
   min-height: 100vh;
+  padding: 40px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* First section (Home) specific spacing */
+#home {
+  padding-top: 40px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Update terminal window margins */
+.terminal-window {
+  margin: 20px auto;
+  width: 90%;
+  max-width: 800px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  header {
+    padding: 10px 0;
   }
+
+  main {
+    padding-top: 70px;
+  }
+
+  #home {
+    padding-top: 30px;
+  }
+
+  section {
+    padding: 30px 15px;
+  }
+}
+
+/* Add or update these styles */
+.prompt {
+  color: var(--terminal-text);
+  margin-bottom: 10px;
+  font-weight: 700; /* Make prompts bold */
+  font-size: 1.1em; /* Slightly larger */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.prompt::before {
+  content: "$";
+  opacity: 0.7;
+  font-weight: 700;
+}
+
+/* Terminal line styles */
+.terminal-line.prompt {
+  color: var(--terminal-text);
+  font-weight: 700;
+  font-size: 1.1em;
+}
+
+.terminal-line.prompt::before {
+  content: "$";
+  opacity: 0.7;
+  margin-right: 8px;
+  font-weight: 700;
+}
+
+/* Terminal output styling */
+.terminal-output {
+  margin: 10px 0 20px 20px;
+  font-weight: 400; /* Keep output text normal weight */
+}
+
+.terminal-output a:hover {
+  color: var(--terminal-secondary);
+  text-decoration: underline;
+}
+
+/* Ensure content is visible */
+.terminal-window {
+  opacity: 1;
+  transform: none;
+}
+
+/* Remove any conflicting animations */
+.fade-in-section {
+  opacity: 1;
+  transform: none;
+}
+
+/* Project Cards */
+.project-card {
+  border: 1px solid var(--terminal-text);
+  border-radius: 4px;
+  padding: 20px;
+  margin: 20px 0;
+  background-color: rgba(0, 255, 156, 0.05);
+}
+
+.project-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Skills Grid */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.skill-category {
+  padding: 15px;
+  border: 1px solid var(--terminal-text);
+  border-radius: 4px;
+  background-color: rgba(0, 255, 156, 0.05);
+}
+
+.category-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--terminal-text);
+}
+
+/* Add hover effects */
+.project-card:hover, 
+.skill-category:hover {
+  box-shadow: 0 0 15px rgba(0, 255, 156, 0.2);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* Skills Section Styles */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.skill-category {
+  padding: 20px;
+  border: 1px solid var(--terminal-text);
+  border-radius: 4px;
+  background-color: rgba(0, 255, 156, 0.05);
+  transition: all 0.3s ease;
+}
+
+.skill-category:hover {
+  box-shadow: 0 0 15px rgba(0, 255, 156, 0.2);
+  transform: translateY(-2px);
+}
+
+.category-title {
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: var(--terminal-text);
+  font-size: 1.1em;
+}
+
+.skill-item {
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+}
+
+.skill-item::before {
+  content: "•";
+  color: var(--terminal-text);
+  margin-right: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .skill-category {
+    padding: 15px;
+  }
+}
+
+/* Animation for skills section */
+.skill-category {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stagger animation for skill items */
+.skill-category:nth-child(1) { animation-delay: 0.1s; }
+.skill-category:nth-child(2) { animation-delay: 0.2s; }
+.skill-category:nth-child(3) { animation-delay: 0.3s; }
+.skill-category:nth-child(4) { animation-delay: 0.4s; }
+
+/* Personal/Interests Section Styles */
+.interests-list {
+  margin: 15px 0 25px 20px;
+}
+
+.keyboard-builds {
+  margin: 15px 0 25px 20px;
+  padding: 15px;
+  border-left: 1px solid var(--terminal-secondary);
+  background-color: rgba(0, 255, 156, 0.05);
+}
+
+.interests-list .terminal-line,
+.keyboard-builds .terminal-line {
+  margin: 10px 0;
+}
+
+/* Add hover effect for keyboard builds */
+.keyboard-builds:hover {
+  border-left: 2px solid var(--terminal-text);
+  background-color: rgba(0, 255, 156, 0.08);
+  transition: all 0.3s ease;
+}
+
+/* Terminal output spacing */
+.terminal-output {
+  margin: 15px 0 30px 20px;
+}
+
+/* Add some spacing between sections */
+.terminal-window .prompt:not(:first-child) {
+  margin-top: 30px;
+}
+
+/* Header specific styles */
+.header-container {
+  margin: 0;
+  padding: 0;
+}
+
+.terminal-name {
+  color: var(--terminal-text);
+  font-size: 1.8rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.nav-links a {
+  color: var(--terminal-text);
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.nav-links a:hover {
+  background-color: var(--terminal-highlight);
+}
+
+.nav-links a::before {
+  content: ">";
+  margin-right: 5px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.nav-links a:hover::before {
+  opacity: 1;
+}
+
+/* Landing Page Styles */
+.landing-page {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(10, 10, 10, 0.95);
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-page.hidden {
+  display: none;
+}
+
+.landing-content {
+  max-width: 800px;
+  padding: 20px;
+  text-align: left;
+  opacity: 1;
+  transform: none;
+}
+
+.landing-prompt {
+  color: var(--terminal-text);
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.landing-name {
+  color: var(--terminal-text);
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin: 20px 0 40px 0;
+}
+
+.landing-intro {
+  margin: 20px 0 40px 20px;
+  font-size: 1.4rem;
+}
+
+.scroll-prompt {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--terminal-text);
+  opacity: 0.7;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0) translateX(-50%);
+  }
+  40% {
+    transform: translateY(-10px) translateX(-50%);
+  }
+  60% {
+    transform: translateY(-5px) translateX(-50%);
+  }
+}
+
+/* Main content positioning */
+.main-content {
+  position: relative;
+  background-color: var(--terminal-bg);
+  min-height: 100vh;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .landing-name {
+    font-size: 2.5rem;
+  }
+
+  .landing-intro {
+    font-size: 1.2rem;
+  }
+
+  .landing-content {
+    padding: 20px;
+  }
+}
+
+/* Ensure smooth scrolling only before landing page is hidden */
+html {
+  scroll-behavior: smooth;
+}
+
+html.no-smooth-scroll {
+  scroll-behavior: auto;
+}
+
+/* Rest of your existing styles... */
+
+/* Root variables */
+:root {
+  --terminal-bg: #0a0a0a;
+  --terminal-text: #00ff9c;
+  --terminal-secondary: #00cc7e;
+  --terminal-highlight: rgba(0, 255, 156, 0.1);
+  --gradient-dark: #0a0a0a;
+  --gradient-mid: #111111;
+  --gradient-light: #161616;
+}
+
+/* Base styles */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  color: var(--terminal-text);
+  font-family: 'JetBrains Mono', monospace;
+  background: linear-gradient(
+    135deg,
+    var(--gradient-dark) 0%,
+    var(--gradient-mid) 50%,
+    var(--gradient-light) 100%
+  );
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* App container */
+.App {
+  min-height: 100vh;
+}
+
+/* Main container */
+.main-container {
+  position: relative;
+}
+
+/* Section styles */
+section {
+  padding: 40px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 90%;
+}
+
+/* Landing page styles */
+#landing {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  max-width: none;
+  margin: 0;
+}
+
+/* Terminal window */
+.terminal-window {
+  background-color: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+/* Header styles */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 20px 0;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.header.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+.header.hidden {
+  opacity: 0;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+/* Footer styles */
+footer {
+  background-color: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  padding: 40px;
+  margin-top: 40px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  section {
+    padding: 20px;
+    width: 95%;
   }
 }
