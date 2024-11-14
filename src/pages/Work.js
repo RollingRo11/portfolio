@@ -7,7 +7,7 @@ function Work() {
       <section className="work-content">
         <div className="terminal-window">
           <TerminalLine 
-            content="$ ls projects/"
+            content="ls projects/"
             className="prompt"
             typingSpeed={35}
           />

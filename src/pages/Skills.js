@@ -7,7 +7,7 @@ function Skills() {
       <section className="skills-content">
         <div className="terminal-window">
           <TerminalLine 
-            content="$ ls skills/"
+            content="ls skills/"
             className="prompt"
             typingSpeed={35}
           />

@@ -4,6 +4,7 @@ function Footer() {
   return (
     <footer>
       <div className="footer-content">
+        <center>
         <div className="terminal-window">
           <div className="contact-section">
             <h2 className="contact-header">$ cat contact.txt</h2>
@@ -31,6 +32,7 @@ function Footer() {
             </div>
           </div>
         </div>
+        </center>
       </div>
     </footer>
   );

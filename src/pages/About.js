@@ -7,7 +7,7 @@ function About() {
       <section className="about-content">
         <div className="terminal-window">
           <TerminalLine 
-            content="$ cat about.txt"
+            content="cat about.txt"
             className="prompt"
             typingSpeed={35}
           />
